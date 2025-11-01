@@ -5,10 +5,16 @@ This project showcases a professional Power BI dashboard built from a retail dat
 ## 📊 Dashboard Highlights
 
 - 💰 **Total Sales by Country**
+- 🔄 **Transaction Analysis**
+![Dashboard Overview](Dashboard/page1.png)
+---
 - 👥 **Customer Distribution**
+![Dashboard Overview](Dashboard/page3.png)
+---
 - 🛒 **Top Products & Categories**
 - 🏬 **Store Performance**
-- 🔄 **Transaction Analysis**
+![Dashboard Overview](Dashboard/page2.png)
+
 
 ## 🧱 Data Architecture
 
@@ -20,8 +26,9 @@ This project showcases a professional Power BI dashboard built from a retail dat
 
 ## 📁 Files Included
 
-- `RetailDashboard.pbix`: Power BI dashboard file
-- `dashboard-preview.png`: Screenshot of the dashboard
+- `Retails-Taskk.pbix`: Power BI dashboard file
+- `Dashboard and Images`: Screenshot of the dashboard
+- `Spark Commands.txt` : Apache Spark commands 
 - `README.md`: Project documentation
 
 ## 🚀 Technologies Used
