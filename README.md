@@ -67,7 +67,7 @@ This project showcases a professional Power BI dashboard built from a retail dat
 ## 📌 Author
 
 Ahmed Youssef – Data Engineer & Power BI Enthusiast  
-[LinkedIn](https://www.linkedin.com/in/your-profile) | [Portfolio](https://your-portfolio.com)
+[LinkedIn](linkedin.com/in/ahmedd-youssef) | [Portfolio](https://data-engineering-portfol-63cbbti.gamma.site/)
 
 ---
 
