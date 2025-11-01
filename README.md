@@ -3,7 +3,7 @@
 This project showcases a professional Power BI dashboard built from a retail dataset stored in Azure Data Lake and processed using Apache Spark on Databricks.
 
 ## 📊 Dashboard Highlights
-| ![](Dashboard/page1.png) | ![](Dashboard/page2.png) | 
+
 - 💰 **Total Sales by Country**
 - 👥 **Customer Distribution**
 - 🛒 **Top Products & Categories**
