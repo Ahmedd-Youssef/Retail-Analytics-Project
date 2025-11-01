@@ -6,15 +6,18 @@ This project showcases a professional Power BI dashboard built from a retail dat
 
 - 💰 **Total Sales by Country**
 - 🔄 **Transaction Analysis**
+---
 ![Dashboard Overview](Dashboard/page1.png)
 ---
 - 👥 **Customer Distribution**
+---
 ![Dashboard Overview](Dashboard/page3.png)
 ---
 - 🛒 **Top Products & Categories**
 - 🏬 **Store Performance**
+---
 ![Dashboard Overview](Dashboard/page2.png)
-
+---
 
 ## 🧱 Data Architecture
 
