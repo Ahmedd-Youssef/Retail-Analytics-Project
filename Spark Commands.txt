@@ -1,0 +1,177 @@
+# Databricks notebook source
+
+
+# COMMAND ----------
+
+df_store = spark.read.parquet("abfss://retalis-db@firststorage11.dfs.core.windows.net/Raw-Data/dbo.stores.parquet")
+df_store.show(5)
+
+# COMMAND ----------
+
+df_customer = spark.read.parquet("abfss://retalis-db@firststorage11.dfs.core.windows.net/MohammedHameds/Retails_Project/refs/heads/main/dataset/customers.parquet")
+df_customer.show(5)
+
+# COMMAND ----------
+
+df_products = spark.read.parquet("abfss://retalis-db@firststorage11.dfs.core.windows.net/Raw-Data/dbo.products.parquet")
+df_products.show(5)
+
+# COMMAND ----------
+
+df_transactions = spark.read.parquet("abfss://retalis-db@firststorage11.dfs.core.windows.net/Raw-Data/dbo.transactions.parquet")
+df_transactions.show(5)
+
+# COMMAND ----------
+
+df_store.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.store_bronze")
+df_transactions.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.transactions_bronze")
+df_products.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.products_bronze")
+df_customer.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.customers_bronze")
+
+# COMMAND ----------
+
+df_customer.printSchema()
+from pyspark.sql.functions import col, sum
+
+# COMMAND ----------
+
+df_customer = df_customer.select(
+    col("customer_id").cast("int"),
+    col("full_name"),
+    col("email"),
+    col("country"),
+    col("registration_date").cast("date")
+)
+df_customer.printSchema()
+
+# COMMAND ----------
+
+df_retails_silver =df_transactions.join(df_customer,"customer_id").join(df_products,"product_id").join(df_store)\
+    .withColumn("total_amount", col("quantity") * col("price"))
+display(df_retails_silver)
+
+# COMMAND ----------
+
+df_retails_silver = df_retails_silver.drop()
+
+# COMMAND ----------
+
+df_retails_silver = df_transactions.join(df_customer,"customer_id").join(df_products,"product_id").join(df_store, "store_id").withColumn("total_amount", col("quantity") * col("price"))
+display(df_retails_silver)
+
+# COMMAND ----------
+
+df_retails_silver.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.df_retails_silver")
+ 
+
+# COMMAND ----------
+
+from pyspark.sql.functions import col, sum , count
+df_country_customer = df_retails_silver.groupBy("country").agg(count("customer_id").alias("Count_Of_Customers"))
+display(df_country_customer)
+
+# COMMAND ----------
+
+df_country_customer.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.country_customer_gold")
+
+# COMMAND ----------
+
+df_Contry_transaction = df_retails_silver.groupBy("country", "category").agg(count("transaction_id").alias("Count_transaction"))
+display(df_Contry_transaction)
+
+# COMMAND ----------
+
+df_Contry_transaction.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.Contry_transaction_gold")
+
+# COMMAND ----------
+
+df_top_products = df_retails_silver.groupBy("product_id", "product_name")\
+    .agg(sum("total_amount").alias("total_sales"))\
+    .orderBy(col("total_sales").desc())\
+    .limit(10)
+display(df_top_products)
+
+
+# COMMAND ----------
+
+df_top_products.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.top_products_gold")
+
+# COMMAND ----------
+
+df_avg_spending = df_retails_silver.groupBy("customer_id")\
+    .agg(sum("total_amount").alias("total_spent"))\
+    .agg({"total_spent": "avg"}).alias("avg_spending")
+
+display(df_avg_spending)
+
+
+# COMMAND ----------
+
+from pyspark.sql.functions import month, year
+df_monthly_sales = df_retails_silver.withColumn("month", month("transaction_date"))\
+    .withColumn("year", year("transaction_date"))\
+    .groupBy("year", "month")\
+    .agg(sum("total_amount").alias("monthly_sales"))\
+    .orderBy("year", "month")
+display(df_monthly_sales)
+
+
+# COMMAND ----------
+
+df_sales_by_country = df_retails_silver.groupBy("country").agg(sum("total_amount").alias("Total_Sales"))
+display(df_sales_by_country)
+
+# COMMAND ----------
+
+df_sales_by_category = df_retails_silver.groupBy("category").agg(sum("total_amount").alias("Total_Sales"))
+display(df_sales_by_category)
+
+# COMMAND ----------
+
+df_sales_by_country.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.sales_by_country_gold")
+df_sales_by_category.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.sales_by_category_gold")
+
+# COMMAND ----------
+
+from pyspark.sql.functions import col, sum
+
+df_top_customers = df_retails_silver.groupBy("customer_id", "full_name")\
+    .agg(sum("total_amount").alias("total_spent"))\
+    .orderBy(col("total_spent").desc())\
+    .limit(10)
+
+display(df_top_customers)
+
+
+# COMMAND ----------
+
+df_top_customers.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.top_customers_gold")
+
+
+# COMMAND ----------
+
+from pyspark.sql.functions import when
+
+df_customer_segment = df_retails_silver.groupBy("customer_id", "full_name")\
+    .agg(sum("total_amount").alias("total_spent"))\
+    .withColumn("segment", when(col("total_spent") > 10000, "High")\
+                            .when(col("total_spent") > 5000, "Medium")\
+                            .otherwise("Low"))
+display(df_customer_segment)
+
+
+
+
+# COMMAND ----------
+
+df_store_performance = df_retails_silver.groupBy("store_id", "store_name")\
+    .agg(sum("total_amount").alias("total_sales"))
+
+display(df_store_performance)
+
+
+
+# COMMAND ----------
+
+df_store_performance.write.mode("overwrite").saveAsTable("`ahmedd-retails`.sales.store_performance_gold")
+
