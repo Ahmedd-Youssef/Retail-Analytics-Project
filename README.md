@@ -28,6 +28,21 @@ This project showcases a professional Power BI dashboard built from a retail dat
 ---
 ## 💭 Microfot Azure
 
+- **Connecting To Microsoft Azure**
+![Azure](Images/Azure.png)
+---
+- **Create DataBricks Named am1**
+![DataBricks](Images/DataBricks.png)
+---
+- **Create Compute Named Ahmedd**
+![Compute](Images/Compute.png)
+---
+- **Open Workspace and connecting to compute(Ahmedd) and write Spark Commands To Get insights**
+![WorkSpace](Images/WorkSpace.png)
+---
+- **Finally My insights Saved on Catalog**
+![Catalog](Images/Catalog.png)
+---
 
 ## 📁 Files Included
 
