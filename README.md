@@ -1,7 +1,15 @@
 # 🛍️ Retail Analytics Dashboard – Power BI
 
 This project showcases a professional Power BI dashboard built from a retail dataset stored in Azure Data Lake and processed using Apache Spark on Databricks.
+---
+## 🧱 Data Architecture
 
+![Pipline Overview](Images/pipeline.png)
+
+- **Bronze Layer**: Raw data from Azure Data Lake (Parquet format)
+- **Silver Layer**: Cleaned and joined data using Spark
+- **Gold Layer**: Aggregated insights ready for BI
+---
 ## 📊 Dashboard Highlights
 
 - 💰 **Total Sales by Country**
@@ -18,14 +26,8 @@ This project showcases a professional Power BI dashboard built from a retail dat
 ---
 ![Dashboard Overview](Dashboard/page2.png)
 ---
+## 💭 Microfot Azure
 
-## 🧱 Data Architecture
-
-![Pipline Overview](Images/pipeline.png)
-
-- **Bronze Layer**: Raw data from Azure Data Lake (Parquet format)
-- **Silver Layer**: Cleaned and joined data using Spark
-- **Gold Layer**: Aggregated insights ready for BI
 
 ## 📁 Files Included
 
