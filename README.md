@@ -11,7 +11,8 @@ This project showcases a professional Power BI dashboard built from a retail dat
 - 🔄 **Transaction Analysis**
 
 ## 🧱 Data Architecture
-![Pipline Overview](images/pipline.png)
+
+![Pipline Overview](images/pipeline.png)
 
 - **Bronze Layer**: Raw data from Azure Data Lake (Parquet format)
 - **Silver Layer**: Cleaned and joined data using Spark
